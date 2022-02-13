@@ -1,0 +1,81 @@
+*{
+    box-sizing: border-box;
+}
+
+html,body{
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: black;
+}
+/* we will have 7 rows in the calculator , 2 of which will be the input field */
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding : 1%;
+
+    width: max(30%,200px);
+    height: max(50%,350px);
+    border: 1px;
+    border-radius: 10px;
+    background-color: gray;
+}
+
+.container > * {
+    width: 90%;
+    margin-bottom: 10px;
+    height: calc((100/7) * 1%);
+}
+
+.input-field{
+    border: 30px;
+    background-color: cadetblue;
+    border: 3px solid black;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    font-size: 1.1em;
+    
+}
+
+.row{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.last-row{
+    margin-bottom: 0;
+}
+
+.row > *{
+    margin: 5%;
+    background-color: black;
+    color: white;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: min(20%,50px);
+    height: max(50%,30px);
+    border-radius: 10px;
+}
+
+
+@media screen and (max-width:600px){
+    body{
+        align-items: flex-start;
+        margin-top: 50px;
+    }
+}

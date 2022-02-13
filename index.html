@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div id = "input" class="input-field">
+
+        </div>
+        <div class="row">
+            <button></button>
+            <button></button>
+            <button></button>
+            <button>/</button>
+        </div>
+        <div class="row">
+            <button type = "button" class="number">7</button>
+            <button type = "button" class="number">8</button>
+            <button type = "button" class="number">9</button>
+            <button type = "button" class="operation">*</button>
+        </div>
+        <div class="row">
+            <button type = "button" class="number">4</button>
+            <button type = "button" class="number">5</button>
+            <button type = "button" class="number">6</button>
+            <button type = "button" class="operation">-</button>
+        </div>
+        <div class="row">
+            <button type = "button" class="number">1</button>
+            <button type = "button" class="number">2</button>
+            <button type = "button" class="number">3</button>
+            <button type = "button" class="operation">+</button>
+        </div>
+        <div class="row last-row">
+            <button type = "button" class="number">0</button>
+            <button type = "button" class="seven">.</button>
+            <button type = "button" class="seven" id="equals">=</button>
+            <button type = "button" class="seven"></button>
+        </div>
+    </div>
+    <div class="first-openrand"></div>
+    <div class="operation"></div>
+    <div class="second-operand"></div>
+
+
+    <script>
+        let firstOperand = 0;
+        let secondOperand = 0;
+        let operationInput = "";
+        let firstFlag = 0; //flag for the first instance of input
+
+        let input = document.getElementById("input")
+        let par = document.createElement("p");
+        par.style.visibility = "hidden";
+        par.innerHTML = "";
+        /* adding eventListener to all buttons with numbers, to print the numbers on the input screen */
+        let numbers = document.querySelectorAll(".number")
+
+        numbers.forEach(element => {
+            element.addEventListener("click",function(){
+                numberPrint(element);   
+            })
+        })
+        
+        /* adding eventListener to all buttons with operations*/
+        
+        let operations = document.querySelectorAll(".operation")
+        operations.forEach(element =>{
+            element.addEventListener("click",function(){
+                if (((firstOperand > 0) || (firstFlag == 0)) && (secondOperand == 0)){
+                    if (firstOperand == 0){
+                        firstOperand = operationPrint(element);
+                        console.log(firstOperand)
+                        input.innerHTML = element.textContent;
+                        operationInput = element.textContent;
+                    } 
+                    if (firstOperand > 0){
+                        input.innerHTML = element.textContent;
+                        operationInput = element.textContent;
+                    }
+                }         
+            })
+        })
+
+        document.getElementById("equals").addEventListener("click",function(){
+            if ((firstOperand > 0) && (operationInput != "") && (secondOperand == 0)){
+                secondOperand = operationPrint();
+                firstOperand = Operation(firstOperand,secondOperand,operationInput);
+                secondOperand = 0;
+                operationInput = "";
+                input.innerHTML = firstOperand;
+            }
+        })
+
+        function operationPrint(){
+               let input = document.getElementById("input")
+               operand = parseInt(input.innerHTML);
+               console.log(input);
+               return operand;
+        }
+
+        function numberPrint(element){
+            let input = document.getElementById("input");  
+            if ((input.textContent == "*") || (input.textContent == "/") || (input.textContent == "+") || (input.textContent == "-"))  {
+                input.innerHTML = "";
+            }
+            input.innerHTML += element.textContent;
+        }
+
+        function Operation(a,b,op){
+            switch (op){
+                case '+': return (a+b);
+                case '-': return (a-b);
+                case '*': return (a*b);
+                case '/': 
+                if (b != 0 ){
+                    return (a/b)
+                }
+                else{
+                    return(NaN);
+                }
+            }
+        }
+    
+    </script>
+</body>
+</html>
