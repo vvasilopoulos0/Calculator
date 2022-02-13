@@ -13,57 +13,54 @@
 
         </div>
         <div class="row">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button>/</button>
+            <button type = "button" id = "clear">C</button>
+            <button type = "button" id = "delete">DEL</button>
+            <button type = "button" class="operation">^</button>
+            <button type = "button" class="operation">%</button>
         </div>
         <div class="row">
             <button type = "button" class="number">7</button>
             <button type = "button" class="number">8</button>
             <button type = "button" class="number">9</button>
-            <button type = "button" class="operation">*</button>
+            <button type = "button" class="operation">/</button>
         </div>
         <div class="row">
             <button type = "button" class="number">4</button>
             <button type = "button" class="number">5</button>
             <button type = "button" class="number">6</button>
-            <button type = "button" class="operation">-</button>
+            <button type = "button" class="operation">*</button>
         </div>
         <div class="row">
             <button type = "button" class="number">1</button>
             <button type = "button" class="number">2</button>
             <button type = "button" class="number">3</button>
-            <button type = "button" class="operation">+</button>
+            <button type = "button" class="operation">-</button>
         </div>
         <div class="row last-row">
             <button type = "button" class="number">0</button>
-            <button type = "button" class="seven">.</button>
+            <button type = "button" id = "point">.</button>
             <button type = "button" class="seven" id="equals">=</button>
-            <button type = "button" class="seven"></button>
+            <button type = "button" class="operation">+</button>
         </div>
     </div>
-    <div class="first-openrand"></div>
-    <div class="operation"></div>
-    <div class="second-operand"></div>
 
 
     <script>
-        let firstOperand = 0;
+        let firstOperand = -21.005; //this is the default value of our firstOperand. If we used zero it could be exploited easily
         let secondOperand = 0;
         let operationInput = "";
         let firstFlag = 0; //flag for the first instance of input
+        let zeroFlag = 0; //flag used for checking instances in the future when firstOperand equals zero
 
         let input = document.getElementById("input")
-        let par = document.createElement("p");
-        par.style.visibility = "hidden";
-        par.innerHTML = "";
         /* adding eventListener to all buttons with numbers, to print the numbers on the input screen */
         let numbers = document.querySelectorAll(".number")
 
         numbers.forEach(element => {
             element.addEventListener("click",function(){
-                numberPrint(element);   
+                if (!(((firstOperand > 0) || (isNaN(firstOperand) == true)) && operationInput == "")){
+                    numberPrint(element);
+                } 
             })
         })
         
@@ -72,24 +69,71 @@
         let operations = document.querySelectorAll(".operation")
         operations.forEach(element =>{
             element.addEventListener("click",function(){
-                if (((firstOperand > 0) || (firstFlag == 0)) && (secondOperand == 0)){
-                    if (firstOperand == 0){
-                        firstOperand = operationPrint(element);
-                        console.log(firstOperand)
-                        input.innerHTML = element.textContent;
-                        operationInput = element.textContent;
+                if (!(operationInput != "")){
+                    if (((firstOperand > -21.005) || (firstFlag == 0)) && (secondOperand == 0)){
+                        if (firstOperand == -21.005){
+                            firstOperand = operationPrint(element);                    
+                            if (isNaN(firstOperand) == true){
+                                firstOperand = -21.005;
+                            }
+                            else{
+                                zeroFlag = 1;
+                                input.innerHTML = element.textContent;
+                                operationInput = element.textContent;
+                                firstFlag = 0;
+                            }
+                            
+                        } 
+                        if ((firstOperand > -21.005) || zeroFlag == 1){
+                            input.innerHTML = element.textContent;
+                            operationInput = element.textContent;
+                            
+                        }
+                    
                     } 
-                    if (firstOperand > 0){
-                        input.innerHTML = element.textContent;
-                        operationInput = element.textContent;
-                    }
-                }         
+                }
+                        
             })
         })
 
+        /* eventListener to point "." */
+        document.getElementById("point").addEventListener("click",function(){
+            let decimal = decimalPrint();
+            input.innerHTML += decimal
+        })
+
+        /* eventListener to clear button */
+        document.getElementById("clear").addEventListener("click",function(){
+            firstOperand = -21.005;
+            secondOperand = 0;
+            operationInput = "";
+            input.innerHTML = "";
+        })
+
+        /* event listener to delete button */
+        document.getElementById("delete").addEventListener("click",function(){
+            let input = document.getElementById("input");
+            let inputNumber = parseInt(input.innerHTML);
+            if (isNaN(inputNumber) == false){
+                if (Math.floor(inputNumber/10) == 0){
+                    input.innerHTML = ""
+                }
+                else{
+                    if (secondOperand > 0){
+                        secondOperand = 0;
+                    }
+                    inputNumber = Math.floor(inputNumber/10)
+                    input.innerHTML = inputNumber.toString();
+                }
+            }   
+           
+        })
+
+        /* event listener to equals button */
         document.getElementById("equals").addEventListener("click",function(){
-            if ((firstOperand > 0) && (operationInput != "") && (secondOperand == 0)){
+            if ((firstOperand > -21.005) && (operationInput != "") && (secondOperand == 0)){
                 secondOperand = operationPrint();
+                console.log(secondOperand);
                 firstOperand = Operation(firstOperand,secondOperand,operationInput);
                 secondOperand = 0;
                 operationInput = "";
@@ -99,18 +143,29 @@
 
         function operationPrint(){
                let input = document.getElementById("input")
-               operand = parseInt(input.innerHTML);
-               console.log(input);
+               operand = parseFloat(input.innerHTML);
                return operand;
         }
 
-        function numberPrint(element){
+        function numberPrint(element){  
             let input = document.getElementById("input");  
-            if ((input.textContent == "*") || (input.textContent == "/") || (input.textContent == "+") || (input.textContent == "-"))  {
+            if ((input.textContent == "*") || (input.textContent == "/") || (input.textContent == "+") || (input.textContent == "-") || (input.textContent == "^") || (input.textContent == "%"))  {
                 input.innerHTML = "";
             }
             input.innerHTML += element.textContent;
         }
+
+        function decimalPrint(){
+            if (input.innerHTML != ""){
+                for(i=0; i< input.innerHTML.length; i++){
+                    if (input.innerHTML.charAt(i) == "."){
+                        return "";
+                    }
+                } 
+                return ".";
+            }
+        }
+
 
         function Operation(a,b,op){
             switch (op){
@@ -124,6 +179,8 @@
                 else{
                     return(NaN);
                 }
+                case '^': return(a**b);
+                case '%': return(a%b);
             }
         }
     
