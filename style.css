@@ -1,5 +1,6 @@
 *{
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html,body{
@@ -9,10 +10,11 @@ html,body{
 
 body{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    background-color: black;
+    background-color: ivory;
 }
 /* we will have 7 rows in the calculator , 2 of which will be the input field */
 .container{
@@ -72,10 +74,22 @@ body{
     border-radius: 10px;
 }
 
+.row > .operation {
+    background-color: rgb(113, 143, 54);
+}
+
+.row > #clear , #delete{
+    background-color: rgb(143, 27, 27);
+}
+
+.copyright{
+    margin-top: 20px;
+}
+
 
 @media screen and (max-width:600px){
     body{
-        align-items: flex-start;
+        
         margin-top: 50px;
     }
 }

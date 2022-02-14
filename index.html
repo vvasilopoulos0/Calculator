@@ -34,20 +34,24 @@
             <button type = "button" class="number">1</button>
             <button type = "button" class="number">2</button>
             <button type = "button" class="number">3</button>
-            <button type = "button" class="operation">-</button>
+            <button type = "button" class="operation" class = "number">-</button>
         </div>
         <div class="row last-row">
             <button type = "button" class="number">0</button>
             <button type = "button" id = "point">.</button>
             <button type = "button" class="seven" id="equals">=</button>
             <button type = "button" class="operation">+</button>
-        </div>
+        </div>   
+        
     </div>
+        
+    <p class="copyright"> Copyright @ vvasilopoulos0</p>
+    <a href="https://github.com/vvasilopoulos0/Calculator"><img src="Assets/Pictures/GitHub-Mark-32px.png" alt="github"></a>
 
 
     <script>
         let firstOperand = -21.005; //this is the default value of our firstOperand. If we used zero it could be exploited easily
-        let secondOperand = 0;
+        let secondOperand = -21.004;
         let operationInput = "";
         let firstFlag = 0; //flag for the first instance of input
         let zeroFlag = 0; //flag used for checking instances in the future when firstOperand equals zero
@@ -58,7 +62,7 @@
 
         numbers.forEach(element => {
             element.addEventListener("click",function(){
-                if (!(((firstOperand > 0) || (isNaN(firstOperand) == true)) && operationInput == "")){
+                if (!(((firstOperand != -21.005) || (isNaN(firstOperand) == true)) && operationInput == "")){
                     numberPrint(element);
                 } 
             })
@@ -70,7 +74,7 @@
         operations.forEach(element =>{
             element.addEventListener("click",function(){
                 if (!(operationInput != "")){
-                    if (((firstOperand > -21.005) || (firstFlag == 0)) && (secondOperand == 0)){
+                    if (((firstOperand != -21.005) || (firstFlag == 0)) && (secondOperand == -21.004)){
                         if (firstOperand == -21.005){
                             firstOperand = operationPrint(element);                    
                             if (isNaN(firstOperand) == true){
@@ -84,13 +88,10 @@
                             }
                             
                         } 
-                        
                         if ((firstOperand > -21.005) || zeroFlag == 1){
                             input.innerHTML = element.textContent;
                             operationInput = element.textContent;
-                            
                         }
-                    
                     } 
                 }
                         
@@ -106,7 +107,7 @@
         /* eventListener to clear button */
         document.getElementById("clear").addEventListener("click",function(){
             firstOperand = -21.005;
-            secondOperand = 0;
+            secondOperand = -21.004;
             operationInput = "";
             input.innerHTML = "";
         })
@@ -142,8 +143,8 @@
                     input.innerHTML = ""
                 }
                     else{
-                        if (secondOperand > 0){
-                            secondOperand = 0;
+                        if (secondOperand != -21.004){
+                            secondOperand = -21.004;
                         }
                         inputNumber = Math.floor(inputNumber/10)
                         input.innerHTML = inputNumber.toString();
@@ -156,11 +157,10 @@
 
         /* event listener to equals button */
         document.getElementById("equals").addEventListener("click",function(){
-            if ((firstOperand > -21.005) && (operationInput != "") && (secondOperand == 0)){
+            if ((firstOperand != -21.005) && (operationInput != "") && (secondOperand == -21.004)){
                 secondOperand = operationPrint();
-                console.log(secondOperand);
                 firstOperand = Operation(firstOperand,secondOperand,operationInput);
-                secondOperand = 0;
+                secondOperand = -21.004;
                 operationInput = "";
                 input.innerHTML = firstOperand;
             }
