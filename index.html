@@ -84,6 +84,7 @@
                             }
                             
                         } 
+                        
                         if ((firstOperand > -21.005) || zeroFlag == 1){
                             input.innerHTML = element.textContent;
                             operationInput = element.textContent;
@@ -112,19 +113,43 @@
 
         /* event listener to delete button */
         document.getElementById("delete").addEventListener("click",function(){
+            let floatFlag = 0;
+            let floatString = ""
             let input = document.getElementById("input");
-            let inputNumber = parseInt(input.innerHTML);
+            console.log(input.innerHTML);
+            for (i=0 ; i < input.innerHTML.length; i++){
+                if (input.innerHTML.charAt(i) == "."){
+                    floatFlag = 1;
+                }
+            }
+            if (floatFlag == 1){
+                inputNumber = parseFloat(input.innerHTML);
+                floatString = inputNumber.toString();
+                console.log(floatString)
+            }
+            else{
+                inputNumber = parseInt(input.innerHTML);
+            }
+            floatFlag = 0 ;
+            
             if (isNaN(inputNumber) == false){
-                if (Math.floor(inputNumber/10) == 0){
-                    input.innerHTML = ""
+                if (floatString != ""){
+                    input.innerHTML = floatString.substr(0,floatString.length-1)
+                    console.log(floatString);
                 }
                 else{
-                    if (secondOperand > 0){
-                        secondOperand = 0;
-                    }
-                    inputNumber = Math.floor(inputNumber/10)
-                    input.innerHTML = inputNumber.toString();
+                    if (Math.floor(inputNumber/10) == 0){
+                    input.innerHTML = ""
                 }
+                    else{
+                        if (secondOperand > 0){
+                            secondOperand = 0;
+                        }
+                        inputNumber = Math.floor(inputNumber/10)
+                        input.innerHTML = inputNumber.toString();
+                    }
+                }
+                
             }   
            
         })
