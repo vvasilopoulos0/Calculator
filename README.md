@@ -1,6 +1,6 @@
 <h1 align="center">Calculator</h1>
 
-Web app of a calculator that is able to handle basic operations.
+<p align="center">Web app of a calculator that is able to handle basic operations. </p>
 
 [Calculator](https://vvasilopoulos0.github.io/Calculator/)<br/><br/>
 
